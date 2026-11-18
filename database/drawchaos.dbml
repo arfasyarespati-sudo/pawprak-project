@@ -1,0 +1,134 @@
+// ============================================================================
+// DrawChaos (CORET! CHAOS) — dbdiagram.io DBML Definition
+// ============================================================================
+
+Table players {
+  id bigint [pk, increment]
+  nickname varchar(50) [not null]
+  avatar varchar(255)
+  guest_token_hash varchar(64) [not null, unique]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table rooms {
+  id bigint [pk, increment]
+  code char(4) [not null, unique]
+  host_player_id bigint [not null, ref: > players.id]
+  status varchar(20) [not null]
+  settings json
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table room_players {
+  id bigint [pk, increment]
+  room_id bigint [not null, ref: > rooms.id]
+  player_id bigint [not null, ref: > players.id]
+  is_ready boolean [not null]
+  joined_at timestamp
+  left_at timestamp
+}
+
+Table games {
+  id bigint [pk, increment]
+  room_id bigint [not null, ref: > rooms.id]
+  status varchar(20) [not null]
+  started_at timestamp
+  finished_at timestamp
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table game_players {
+  id bigint [pk, increment]
+  game_id bigint [not null, ref: > games.id]
+  player_id bigint [not null, ref: > players.id]
+  turn_order int [not null]
+  total_score int [not null]
+  chaos_energy int [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table words {
+  id bigint [pk, increment]
+  phrase varchar(255) [not null, unique]
+  category varchar(50)
+  difficulty varchar(20) [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table rounds {
+  id bigint [pk, increment]
+  game_id bigint [not null, ref: > games.id]
+  artist_player_id bigint [not null, ref: > players.id]
+  word_id bigint [not null, ref: > words.id]
+  round_number int [not null]
+  status varchar(20) [not null]
+  started_at timestamp
+  ended_at timestamp
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table guesses {
+  id bigint [pk, increment]
+  round_id bigint [not null, ref: > rounds.id]
+  player_id bigint [not null, ref: > players.id]
+  content varchar(255) [not null]
+  is_correct boolean [not null]
+  created_at timestamp
+}
+
+Table curses {
+  id bigint [pk, increment]
+  slug varchar(50) [not null, unique]
+  name varchar(100) [not null]
+  energy_cost int [not null]
+  duration_ms int [not null]
+  cooldown_ms int [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table curse_uses {
+  id bigint [pk, increment]
+  round_id bigint [not null, ref: > rounds.id]
+  player_id bigint [not null, ref: > players.id]
+  curse_id bigint [not null, ref: > curses.id]
+  payload json
+  activated_at timestamp [not null]
+}
+
+Table strokes {
+  id bigint [pk, increment]
+  round_id bigint [not null, ref: > rounds.id]
+  sequence int [not null]
+  color varchar(20) [not null]
+  brush_size int [not null]
+  points json [not null]
+  started_at_ms int [not null]
+  created_at timestamp
+}
+
+Table round_points {
+  id bigint [pk, increment]
+  round_id bigint [not null, ref: > rounds.id]
+  player_id bigint [not null, ref: > players.id]
+  reason varchar(50) [not null]
+  points int [not null]
+  created_at timestamp
+}
+
+Table artworks {
+  id bigint [pk, increment]
+  round_id bigint [not null, unique, ref: - rounds.id]
+  title varchar(255) [not null]
+  image_path varchar(500)
+  gif_path varchar(500)
+  status varchar(20) [not null]
+  created_at timestamp
+  updated_at timestamp
+}
