@@ -22,11 +22,30 @@
             @if (Route::has('login'))
                 <nav class="flex items-center justify-end gap-4">
                     @auth
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            🎨 {{ Auth::user()->player?->nickname ?? Auth::user()->email }}
+                        </span>
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button
+                                type="submit"
+                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal cursor-pointer"
+                            >
+                                Logout
+                            </button>
+                        </form>
+                    @elseif (session('is_guest'))
+                        @php
+                            $guestPlayer = \App\Models\Player::find(session('guest_player_id'));
+                        @endphp
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            🎭 {{ $guestPlayer?->nickname ?? 'Tamu' }}
+                        </span>
                         <a
-                            href="{{ url('/dashboard') }}"
+                            href="{{ route('login') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
                         >
-                            Dashboard
+                            Login Akun
                         </a>
                     @else
                         <a

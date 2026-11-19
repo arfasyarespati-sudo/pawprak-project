@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nickname', 50);
             $table->string('avatar', 255)->nullable();
-            $table->string('guest_token_hash', 64)->unique();
+            $table->string('guest_token_hash', 64)->nullable()->unique();
             $table->timestamps();
         });
     }

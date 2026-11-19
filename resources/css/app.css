@@ -6,4 +6,16 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Playfair Display', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+
+    --color-chaos-bg: #0D0D1D;
+    --color-chaos-card: #1B1B30;
+    --color-chaos-primary: #B9F34B;
+    --color-chaos-secondary: #8B5CF6;
+    --color-chaos-accent: #DCA6D8;
+    --color-chaos-text: #F5F5F5;
+    --color-chaos-text-secondary: #A5A5B5;
+    --color-chaos-input-bg: #13132A;
+    --color-chaos-input-border: #2A2A45;
+    --color-chaos-card-border: #2A2A45;
 }
