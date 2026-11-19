@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Word extends Model
+{
+    use HasFactory;
+
+    protected $table = 'words';
+
+    protected $fillable = [
+        'phrase',
+        'category',
+        'difficulty',
+    ];
+
+    /**
+     * Rounds using this word.
+     */
+    public function rounds(): HasMany
+    {
+        return $this->hasMany(Round::class, 'word_id');
+    }
+}
