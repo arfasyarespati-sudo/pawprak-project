@@ -23,7 +23,7 @@ class AuthController extends Controller
     public function showLogin(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect('/');
+            return redirect()->route('lobby.hub');
         }
 
         return view('auth.login');
@@ -35,7 +35,7 @@ class AuthController extends Controller
     public function showRegister(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect('/');
+            return redirect()->route('lobby.hub');
         }
 
         return view('auth.register');
@@ -55,6 +55,7 @@ class AuthController extends Controller
             ]);
 
             $user = User::create([
+                'name' => $validated['nickname'],
                 'player_id' => $player->id,
                 'email' => $validated['email'],
                 'password' => $validated['password'],
@@ -68,7 +69,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Registrasi berhasil!',
-            'redirect' => '/',
+            'redirect' => route('lobby.hub'),
         ], 201);
     }
 
@@ -91,7 +92,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login berhasil!',
-            'redirect' => '/',
+            'redirect' => route('lobby.hub'),
         ]);
     }
 

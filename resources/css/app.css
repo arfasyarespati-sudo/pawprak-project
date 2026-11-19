@@ -2,20 +2,50 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-serif: 'Playfair Display', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 
-    --color-chaos-bg: #0D0D1D;
-    --color-chaos-card: #1B1B30;
-    --color-chaos-primary: #B9F34B;
-    --color-chaos-secondary: #8B5CF6;
+    --color-chaos-bg: #0B0C14;
+    --color-chaos-card: #141625;
+    --color-chaos-card-alt: #1B1D30;
+    --color-chaos-card-border: #23263A;
+    --color-chaos-border: #23263A;
+    --color-chaos-primary: #C3F53C;
+    --color-chaos-primary-dark: #0B0C14;
+    --color-chaos-secondary: #7C3AED;
     --color-chaos-accent: #DCA6D8;
-    --color-chaos-text: #F5F5F5;
-    --color-chaos-text-secondary: #A5A5B5;
-    --color-chaos-input-bg: #13132A;
-    --color-chaos-input-border: #2A2A45;
-    --color-chaos-card-border: #2A2A45;
+    --color-chaos-text: #F8FAFC;
+    --color-chaos-text-muted: #94A3B8;
+    --color-chaos-input-bg: #0E101B;
+    --color-chaos-input-border: #282C44;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #0B0C14;
+}
+::-webkit-scrollbar-thumb {
+    background: #23263A;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #3B4260;
+}
+
+/* Arcade Neon Glows */
+.glow-lime {
+    box-shadow: 0 0 25px -4px rgba(195, 245, 60, 0.35);
+}
+.glow-purple {
+    box-shadow: 0 0 25px -4px rgba(124, 58, 237, 0.4);
+}
+.glow-subtle {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
 }

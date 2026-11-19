@@ -25,6 +25,12 @@
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
                             🎨 {{ Auth::user()->player?->nickname ?? Auth::user()->email }}
                         </span>
+                        <a
+                            href="{{ route('lobby.hub') }}"
+                            class="inline-block px-4 py-1.5 bg-[#C3F53C] hover:brightness-110 text-[#0B0C14] font-bold rounded-sm text-sm leading-normal transition cursor-pointer"
+                        >
+                            🎮 Masuk Lobby Hub
+                        </a>
                         <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
                             <button
