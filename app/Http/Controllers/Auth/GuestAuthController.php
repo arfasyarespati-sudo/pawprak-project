@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Player;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class GuestAuthController extends Controller
@@ -21,23 +24,47 @@ class GuestAuthController extends Controller
         $guestNumber = Player::whereNotNull('guest_token_hash')->count() + 1;
         $nickname = 'Tamu_'.$guestNumber.'_'.Str::random(4);
 
-        $player = Player::create([
-            'nickname' => $nickname,
-            'guest_token_hash' => $guestTokenHash,
-        ]);
+        $avatars = ['kucing', 'dino', 'raccoon', 'ghost', 'blob', 'robot'];
+        $avatar = $avatars[array_rand($avatars)];
 
-        $request->session()->put('guest_player_id', $player->id);
+        /** @var array{player: Player, user: User} $result */
+        $result = DB::transaction(function () use ($nickname, $avatar, $guestTokenHash): array {
+            $player = Player::create([
+                'nickname' => $nickname,
+                'avatar' => $avatar,
+                'guest_token_hash' => $guestTokenHash,
+            ]);
+
+            $user = User::create([
+                'name' => $nickname,
+                'player_id' => $player->id,
+                'email' => 'guest_'.strtolower(Str::random(12)).'@guest.coretchaos.local',
+                'password' => Str::random(32),
+                'avatar' => $avatar,
+                'player_title' => 'Tamu Rusuh',
+            ]);
+
+            return [
+                'player' => $player,
+                'user' => $user,
+            ];
+        });
+
+        Auth::login($result['user']);
+        $request->session()->regenerate();
+
+        $request->session()->put('guest_player_id', $result['player']->id);
         $request->session()->put('guest_token', $guestToken);
         $request->session()->put('is_guest', true);
 
         return response()->json([
             'message' => 'Login sebagai tamu berhasil!',
             'player' => [
-                'id' => $player->id,
-                'nickname' => $player->nickname,
+                'id' => $result['player']->id,
+                'nickname' => $result['player']->nickname,
             ],
             'guest_token' => $guestToken,
-            'redirect' => '/',
+            'redirect' => redirect()->intended(route('lobby.hub'))->getTargetUrl(),
         ]);
     }
 
@@ -75,7 +102,13 @@ class GuestAuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
+        if (Auth::check()) {
+            Auth::logout();
+        }
+
         $request->session()->forget(['guest_player_id', 'guest_token', 'is_guest']);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json([
             'message' => 'Logout tamu berhasil.',

@@ -3,7 +3,7 @@
         maxPlayers: 8,
         roundDuration: 80,
         gameMode: 'classic',
-        wordPacks: ['Kultur Pop Indo', 'Istilah Game & Esports'],
+        wordPacks: ['Umum & Benda', 'Buah & Makanan'],
         isPublic: true,
         selectedAvatar: '{{ Auth::user()->avatar ?? 'kucing' }}',
 
@@ -46,7 +46,6 @@
              x-transition:leave="ease-in duration-150"
              x-transition:leave-start="opacity-100 translate-y-0 scale-100"
              x-transition:leave-end="opacity-0 translate-y-4 scale-95"
-             @click.outside="open = false"
              class="relative w-full max-w-2xl transform overflow-hidden rounded-2xl bg-[#141625] border border-[#23263A] p-6 sm:p-8 shadow-2xl text-left transition-all">
 
             {{-- Close Button --}}
@@ -131,7 +130,7 @@
                     </div>
 
                     <p class="text-[11px] text-gray-400 mt-2 flex items-center gap-1">
-                        <span>ⓘ</span> Minimal 3 pemain untuk memulai pertandingan berperingkat.
+                        <span>ⓘ</span> Minimal 2 pemain untuk memulai pertandingan.
                     </p>
                 </div>
 
@@ -253,32 +252,32 @@
                     </div>
 
                     <div class="flex flex-wrap gap-2">
-                        <button type="button" @click="togglePack('Kultur Pop Indo')"
-                                :class="wordPacks.includes('Kultur Pop Indo') ? 'bg-[#C3F53C] text-[#0B0C14] font-bold border-[#C3F53C]' : 'bg-[#1B1D30] text-gray-300 border-[#23263A] hover:bg-[#23263A]'"
+                        <button type="button" @click="togglePack('Umum & Benda')"
+                                :class="wordPacks.includes('Umum & Benda') ? 'bg-[#C3F53C] text-[#0B0C14] font-bold border-[#C3F53C]' : 'bg-[#1B1D30] text-gray-300 border-[#23263A] hover:bg-[#23263A]'"
                                 class="px-3.5 py-1.5 rounded-full border text-xs transition cursor-pointer flex items-center gap-1.5">
-                            <span>🇲🇨 Kultur Pop Indo</span>
-                            <span x-show="wordPacks.includes('Kultur Pop Indo')">✓</span>
+                            <span>🏠 Umum &amp; Benda</span>
+                            <span x-show="wordPacks.includes('Umum & Benda')">✓</span>
                         </button>
 
-                        <button type="button" @click="togglePack('Istilah Game & Esports')"
-                                :class="wordPacks.includes('Istilah Game & Esports') ? 'bg-[#C3F53C] text-[#0B0C14] font-bold border-[#C3F53C]' : 'bg-[#1B1D30] text-gray-300 border-[#23263A] hover:bg-[#23263A]'"
+                        <button type="button" @click="togglePack('Buah & Makanan')"
+                                :class="wordPacks.includes('Buah & Makanan') ? 'bg-[#C3F53C] text-[#0B0C14] font-bold border-[#C3F53C]' : 'bg-[#1B1D30] text-gray-300 border-[#23263A] hover:bg-[#23263A]'"
                                 class="px-3.5 py-1.5 rounded-full border text-xs transition cursor-pointer flex items-center gap-1.5">
-                            <span>🎮 Istilah Game & Esports</span>
-                            <span x-show="wordPacks.includes('Istilah Game & Esports')">✓</span>
+                            <span>🍎 Buah &amp; Makanan</span>
+                            <span x-show="wordPacks.includes('Buah & Makanan')">✓</span>
                         </button>
 
-                        <button type="button" @click="togglePack('Makanan & Minuman Lokal')"
-                                :class="wordPacks.includes('Makanan & Minuman Lokal') ? 'bg-[#C3F53C] text-[#0B0C14] font-bold border-[#C3F53C]' : 'bg-[#1B1D30] text-gray-300 border-[#23263A] hover:bg-[#23263A]'"
+                        <button type="button" @click="togglePack('Hewan')"
+                                :class="wordPacks.includes('Hewan') ? 'bg-[#C3F53C] text-[#0B0C14] font-bold border-[#C3F53C]' : 'bg-[#1B1D30] text-gray-300 border-[#23263A] hover:bg-[#23263A]'"
                                 class="px-3.5 py-1.5 rounded-full border text-xs transition cursor-pointer flex items-center gap-1.5">
-                            <span>🍜 Makanan & Minuman Lokal</span>
-                            <span x-show="wordPacks.includes('Makanan & Minuman Lokal')">✓</span>
+                            <span>🐱 Hewan</span>
+                            <span x-show="wordPacks.includes('Hewan')">✓</span>
                         </button>
 
-                        <button type="button" @click="togglePack('Hewan Kocak')"
-                                :class="wordPacks.includes('Hewan Kocak') ? 'bg-[#C3F53C] text-[#0B0C14] font-bold border-[#C3F53C]' : 'bg-[#1B1D30] text-gray-300 border-[#23263A] hover:bg-[#23263A]'"
+                        <button type="button" @click="togglePack('Alam & Kendaraan')"
+                                :class="wordPacks.includes('Alam & Kendaraan') ? 'bg-[#C3F53C] text-[#0B0C14] font-bold border-[#C3F53C]' : 'bg-[#1B1D30] text-gray-300 border-[#23263A] hover:bg-[#23263A]'"
                                 class="px-3.5 py-1.5 rounded-full border text-xs transition cursor-pointer flex items-center gap-1.5">
-                            <span>🐱 Hewan Kocak</span>
-                            <span x-show="wordPacks.includes('Hewan Kocak')">✓</span>
+                            <span>🚗 Alam &amp; Kendaraan</span>
+                            <span x-show="wordPacks.includes('Alam & Kendaraan')">✓</span>
                         </button>
                     </div>
                 </div>

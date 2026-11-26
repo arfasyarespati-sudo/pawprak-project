@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Player;
+use App\Models\User;
 use Closure;
 use Illuminate\Auth\GenericUser;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class EnsureGuestPlayerToken
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->is('api/auth', 'api/auth/*', 'login', 'register', 'logout', 'reset-password/*', 'lobby', 'lobby/*', 'join/*', 'game/*')) {
+        if ($request->is('/', 'profile', 'api/auth', 'api/auth/*', 'login', 'register', 'logout', 'reset-password/*', 'lobby', 'lobby/*', 'join/*', 'game/*')) {
             return $next($request);
         }
 
@@ -66,13 +67,23 @@ class EnsureGuestPlayerToken
         $avatar = $requestedAvatar !== '' ? $requestedAvatar : $defaultAvatar;
 
         try {
-            $player = Player::firstOrCreate(
-                ['guest_token_hash' => $tokenHash],
-                [
-                    'nickname' => $nickname,
-                    'avatar' => $avatar,
-                ]
-            );
+            $player = null;
+            if (preg_match('/^auth_user_(\d+)$/', $rawToken, $matches) === 1) {
+                $authUser = User::with('player')->find((int) $matches[1]);
+                if ($authUser?->player) {
+                    $player = $authUser->player;
+                }
+            }
+
+            if (! $player) {
+                $player = Player::firstOrCreate(
+                    ['guest_token_hash' => $tokenHash],
+                    [
+                        'nickname' => $nickname,
+                        'avatar' => $avatar,
+                    ]
+                );
+            }
 
             $updates = [];
             if ($requestedNickname !== '' && $player->nickname !== $nickname) {

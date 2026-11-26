@@ -504,6 +504,45 @@ class CoretChaosApp {
         }
     }
 
+    handleRoundTransition(nextRoomSnapshot) {
+        if (!nextRoomSnapshot) {
+            return;
+        }
+
+        this.strokes = [];
+        this.activeCurses = { earthquake: 0, invert: 0, blindfold: 0, sticker: 0 };
+
+        const wrapper = document.getElementById('chaos-canvas-wrapper');
+        if (wrapper) {
+            wrapper.classList.remove('animate-chaos-earthquake', 'fx-gempa', 'animate-chaos-drunk', 'fx-mabuk', 'fx-gelap');
+        }
+        document.getElementById('canvas-active-curse-banner')?.classList.add('hidden');
+        document.getElementById('inverted-cursor-ghost')?.classList.add('hidden');
+        document.getElementById('curse-sticker-bomb-layer')?.classList.add('hidden');
+
+        this.roundSecondsLeft = nextRoomSnapshot.round_duration || 60;
+        this.roundElapsedSeconds = 0;
+
+        if (this.renderedGuessKeys) {
+            this.renderedGuessKeys.clear();
+        }
+        const feed = document.getElementById('chat') || document.getElementById('live-guesses-feed');
+        if (feed) {
+            feed.innerHTML = '';
+            const sysMsg = document.createElement('div');
+            sysMsg.className = 'm';
+            sysMsg.innerHTML = `<span style="color:var(--lime);font-weight:700;">🔄 Ronde ${this.escapeHtml(String(nextRoomSnapshot.current_round || 1))} dimulai!</span> Giliran <b>${this.escapeHtml(nextRoomSnapshot.round?.artist_name || 'Pelukis')}</b> menggambar!`;
+            feed.appendChild(sysMsg);
+        }
+
+        this.applyRoomSnapshot(nextRoomSnapshot);
+        const myRole = this.determineMyRoleFromRoom();
+        this.switchView(myRole);
+        this.updateGameplayRoleUI();
+        this.resizeAndRedrawCanvas();
+        this.showToast(`🎨 Ronde ${nextRoomSnapshot.current_round || 1}: Giliran ${nextRoomSnapshot.round?.artist_name || 'Pelukis'} menggambar!`);
+    }
+
     determineMyRoleFromRoom() {
         if (!this.room || !this.room.round) {
             return 'saboteur';
@@ -532,8 +571,12 @@ class CoretChaosApp {
         const chatBtn = document.getElementById('btn-submit-live-guess');
         const chatCount = document.getElementById('chat-players-count');
 
+        const roundStatus = this.room?.round?.status || 'drawing';
         const secretWord = this.room?.round?.secret_word || '';
-        const hasWord = Boolean(secretWord);
+        const maskedWord = this.room?.round?.masked_word || '';
+        const hasWord = isArtist
+            ? Boolean(secretWord)
+            : (roundStatus !== 'choosing_word' && Boolean(maskedWord || secretWord));
 
         if (roundNumEl) {
             const cur = String(this.room?.current_round || 1);
@@ -2776,7 +2819,13 @@ class CoretChaosApp {
                 if (data.guess) {
                     this.appendGuessToChatFeed(data.guess);
                     this.broadcastEvent('guess_submitted', data.guess);
-                    if (data.guess.status === 'exact' || data.guess.is_correct) {
+                    if (data.round_rotated && data.room) {
+                        this.showToast(`🎉 Semua pemain berhasil menebak! Lanjut Ronde ${data.next_round_number} — giliran ${data.next_artist_name} menggambar!`);
+                        this.broadcastEvent('round_rotated', { round_number: data.next_round_number });
+                        setTimeout(() => {
+                            this.handleRoundTransition(data.room);
+                        }, 1200);
+                    } else if (data.guess.status === 'exact' || data.guess.is_correct) {
                         await this.pollRoomStateFallback();
                     }
                 }
@@ -3453,14 +3502,12 @@ class CoretChaosApp {
             const myRole = this.determineMyRoleFromRoom();
             this.switchView(myRole);
         } else if (type === 'round_rotated' && payload) {
-            const nextRoom = payload.room || payload;
-            this.applyRoomSnapshot(nextRoom);
-            this.strokes = [];
-            this.roundSecondsLeft = nextRoom.round_duration || 60;
-            this.roundElapsedSeconds = 0;
-            const myRole = this.determineMyRoleFromRoom();
-            this.showToast(`🔄 Ronde Berikutnya! Giliran Pelukis: ${payload.new_artist || nextRoom.round?.artist_name || 'Pemain'}`);
-            this.switchView(myRole);
+            if (payload.round_number && !payload.players && !payload.room) {
+                this.pollRoomStateFallback();
+            } else {
+                const nextRoom = payload.room || payload;
+                this.handleRoundTransition(nextRoom);
+            }
         } else if (type === 'room_settings_updated' && payload) {
             this.applyRoomSnapshot(payload);
             this.showToast('⚙️ Pengaturan room diperbarui oleh Host!');
@@ -3665,12 +3712,23 @@ class CoretChaosApp {
 
             const prevStatus = this.room?.status;
             const prevRound = this.room?.current_round;
+            const prevRoundId = this.room?.round?.id;
+            const prevArtistId = this.room?.round?.artist_id;
+
+            const isRoundRotated = Boolean(
+                (prevRound && data.room.current_round !== prevRound) ||
+                (prevRoundId && data.room.round?.id && data.room.round.id !== prevRoundId) ||
+                (prevArtistId && data.room.round?.artist_id && Number(data.room.round.artist_id) !== Number(prevArtistId))
+            );
+
+            if (isRoundRotated) {
+                this.handleRoundTransition(data.room);
+                return;
+            }
+
             this.applyRoomSnapshot(data.room);
 
             if (prevStatus === 'lobby' && data.room.status === 'playing' && this.activeView === 'lobby') {
-                const myRole = this.determineMyRoleFromRoom();
-                this.switchView(myRole);
-            } else if (prevRound && data.room.current_round !== prevRound) {
                 const myRole = this.determineMyRoleFromRoom();
                 this.switchView(myRole);
             } else if (this.activeView === 'saboteur' || this.activeView === 'artist') {

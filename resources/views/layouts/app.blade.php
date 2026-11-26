@@ -27,7 +27,7 @@
     <header class="sticky top-0 z-40 bg-[#0B0C14]/90 backdrop-blur-md border-b border-[#23263A] px-4 lg:px-8 py-3">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             {{-- Brand Logo --}}
-            <a href="{{ route('lobby.hub') }}" class="flex items-center gap-2 group shrink-0">
+            <a href="{{ route('home') }}" class="flex items-center gap-2 group shrink-0">
                 <span class="text-xl group-hover:scale-110 transition-transform">🎨</span>
                 <span class="text-xl tracking-wider font-extrabold text-white">
                     CORET! <span class="text-[#C3F53C]">CHAOS</span>
@@ -36,18 +36,11 @@
 
             {{-- Center Navigation Tabs --}}
             <nav class="hidden md:flex items-center gap-1.5 bg-[#141625] p-1 rounded-xl border border-[#23263A]">
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'bg-[#23263A] text-white font-semibold shadow-sm' : 'text-gray-400 hover:text-white' }} px-4 py-1.5 rounded-lg text-xs tracking-wide transition-colors">
+                    Beranda
+                </a>
                 <a href="{{ route('lobby.hub') }}" class="{{ request()->routeIs('lobby.hub') || request()->routeIs('lobby.room') ? 'bg-[#23263A] text-white font-semibold shadow-sm' : 'text-gray-400 hover:text-white' }} px-4 py-1.5 rounded-lg text-xs tracking-wide transition-colors">
                     Lobby Hub
-                </a>
-                <a href="#custom-rooms" class="text-gray-400 hover:text-white px-4 py-1.5 rounded-lg text-xs tracking-wide transition-colors">
-                    Custom Rooms
-                </a>
-                <a href="#chaos-pass" class="text-gray-400 hover:text-white px-4 py-1.5 rounded-lg text-xs tracking-wide transition-colors flex items-center gap-1.5">
-                    <span>Chaos Pass</span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-[#C3F53C]"></span>
-                </a>
-                <a href="#leaderboards" class="text-gray-400 hover:text-white px-4 py-1.5 rounded-lg text-xs tracking-wide transition-colors">
-                    Leaderboards
                 </a>
             </nav>
 
@@ -87,11 +80,16 @@
                              class="absolute right-0 mt-2 w-48 rounded-xl bg-[#141625] border border-[#23263A] shadow-2xl py-1 z-50">
                             <div class="px-3 py-2 border-b border-[#23263A]">
                                 <p class="text-xs font-bold text-white truncate">{{ Auth::user()->nickname }}</p>
-                                <p class="text-[11px] text-gray-400 truncate">{{ Auth::user()->email }}</p>
+                                <p class="text-[11px] text-gray-400 truncate">
+                                    {{ str_ends_with(Auth::user()->email, '@guest.coretchaos.local') ? 'Akun Tamu' : Auth::user()->email }}
+                                </p>
                             </div>
                             <a href="{{ route('lobby.hub') }}" class="block px-3 py-2 text-xs text-gray-300 hover:bg-[#23263A] hover:text-white transition-colors">
                                 🏠 Lobby Hub
                             </a>
+                            <button type="button" @click="open = false; $dispatch('open-profile-modal')" class="w-full text-left px-3 py-2 text-xs text-gray-300 hover:bg-[#23263A] hover:text-white transition-colors cursor-pointer">
+                                ✏️ Edit Profil
+                            </button>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="w-full text-left px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors">
@@ -163,6 +161,8 @@
             </div>
         </div>
     </footer>
+
+    <x-profile-modal />
 
     @stack('scripts')
 </body>

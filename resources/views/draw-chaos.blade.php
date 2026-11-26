@@ -1158,15 +1158,18 @@
                 <h2>Giliranmu melukis!</h2>
                 <p>Ketik kata rahasia bebas (2 sampai 40 karakter) atau pilih rekomendasi. Jangan ditulis di kanvas.</p>
                 <div class="wr">
-                    <input id="input-artist-secret-word" maxlength="40" placeholder="Contoh: Kucing naik helikopter" aria-label="Kata rahasia">
+                    <input id="input-artist-secret-word" maxlength="40" placeholder="Contoh: Apel, Rumah, Kucing" aria-label="Kata rahasia">
                     <button class="set" id="btn-submit-secret-word" type="submit">Tetapkan kata</button>
                 </div>
                 <div class="er" id="artist-word-error" role="alert"></div>
                 <div class="chips" id="artist-word-suggestions">
                     <span>Rekomendasi:</span>
-                    <button type="button" data-suggested-word="Kucing naik helikopter">Kucing naik helikopter</button>
-                    <button type="button" data-suggested-word="Sate ayam Madura">Sate ayam Madura</button>
-                    <button type="button" data-suggested-word="Superman terbang miring">Superman terbang miring</button>
+                    <button type="button" data-suggested-word="Apel">Apel</button>
+                    <button type="button" data-suggested-word="Rumah">Rumah</button>
+                    <button type="button" data-suggested-word="Kucing">Kucing</button>
+                    <button type="button" data-suggested-word="Matahari">Matahari</button>
+                    <button type="button" data-suggested-word="Mobil">Mobil</button>
+                    <button type="button" data-suggested-word="Payung">Payung</button>
                 </div>
             </form>
 

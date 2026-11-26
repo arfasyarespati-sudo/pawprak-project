@@ -1,5 +1,5 @@
 <div x-data="{
-        open: false,
+        open: @js($errors->has('code')),
         chars: ['', '', '', ''],
         selectedAvatar: '{{ Auth::user()->avatar ?? 'kucing' }}',
         avatars: [
@@ -84,7 +84,6 @@
              x-transition:leave="ease-in duration-150"
              x-transition:leave-start="opacity-100 translate-y-0 scale-100"
              x-transition:leave-end="opacity-0 translate-y-4 scale-95"
-             @click.outside="open = false"
              class="relative w-full max-w-lg transform overflow-hidden rounded-2xl bg-[#141625] border border-[#23263A] p-6 sm:p-8 shadow-2xl text-left transition-all">
 
             {{-- Close Button --}}
@@ -152,13 +151,13 @@
                     </div>
 
                     <div class="grid grid-cols-6 gap-2">
-                        <template x-for="item in avatars" :key="item.id">
-                            <button type="button" @click="selectedAvatar = item.id"
-                                    :class="selectedAvatar === item.id ? 'ring-2 ring-[#C3F53C] scale-105 bg-[#23263A]' : 'opacity-70 hover:opacity-100 bg-[#141625]'"
+                        @foreach (['kucing', 'dino', 'raccoon', 'ghost', 'blob', 'robot'] as $avatarId)
+                            <button type="button" @click="selectedAvatar = '{{ $avatarId }}'"
+                                    :class="selectedAvatar === '{{ $avatarId }}' ? 'ring-2 ring-[#C3F53C] scale-105 bg-[#23263A]' : 'opacity-70 hover:opacity-100 bg-[#141625]'"
                                     class="p-1 rounded-xl transition flex flex-col items-center justify-center cursor-pointer">
-                                <x-player-avatar ::avatar="item.id" size="sm" glow="none" />
+                                <x-player-avatar :avatar="$avatarId" size="sm" glow="none" />
                             </button>
-                        </template>
+                        @endforeach
                     </div>
                 </div>
 
