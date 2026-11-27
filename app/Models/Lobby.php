@@ -93,11 +93,11 @@ class Lobby extends Model
     }
 
     /**
-     * Check if the lobby meets minimum requirements to start (at least 3 players).
+     * Check if the lobby meets minimum requirements to start (at least 2 players).
      */
     public function canStart(): bool
     {
-        return $this->players()->count() >= 3;
+        return $this->players()->count() >= 2;
     }
 
     /**

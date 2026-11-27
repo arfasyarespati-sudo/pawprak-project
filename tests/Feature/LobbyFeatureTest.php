@@ -335,7 +335,7 @@ class LobbyFeatureTest extends TestCase
         ]);
     }
 
-    public function test_host_cannot_start_with_less_than_3_players(): void
+    public function test_host_cannot_start_with_less_than_2_players(): void
     {
         $host = User::factory()->create();
         $lobby = Lobby::create([
@@ -360,9 +360,9 @@ class LobbyFeatureTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_host_can_start_when_3_or_more_players_present(): void
+    public function test_host_can_start_when_2_or_more_players_present(): void
     {
-        $users = User::factory()->count(3)->create();
+        $users = User::factory()->count(2)->create();
         $host = $users[0];
 
         $lobby = Lobby::create([

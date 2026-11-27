@@ -101,7 +101,7 @@ class LobbyController extends Controller
                 'lobby_id' => $lobby->id,
                 'user_id' => null,
                 'sender_type' => 'system',
-                'message' => "Lobby #{$code} berhasil dibuat. Minimal 3 pemain untuk memulai!",
+                'message' => "Lobby #{$code} berhasil dibuat. Minimal 2 pemain untuk memulai!",
             ]);
 
             return $lobby;
@@ -576,7 +576,7 @@ class LobbyController extends Controller
         }
 
         if (! $lobby->canStart()) {
-            $error = 'Minimal 3 pemain untuk memulai permainan!';
+            $error = 'Minimal 2 pemain untuk memulai permainan!';
             if ($request->wantsJson()) {
                 return response()->json(['error' => $error], 422);
             }

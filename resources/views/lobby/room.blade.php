@@ -352,8 +352,8 @@
                         <span class="text-[10px] font-mono text-gray-400" x-text="`(${totalPlayers}/${maxPlayers})`"></span>
                     </div>
                     <p class="text-[11px] text-gray-400"
-                       x-text="canStart ? 'Syarat 3 pemain terpenuhi. Kamu bisa memulai sekarang atau menunggu slot penuh.' : `Kurang ${Math.max(0, 3 - totalPlayers)} pemain lagi untuk syarat minimal pertandingan.`">
-                        Syarat 3 pemain terpenuhi.
+                       x-text="canStart ? 'Syarat minimal 2 pemain terpenuhi. Kamu bisa memulai sekarang atau menunggu slot penuh.' : `Kurang ${Math.max(0, 2 - totalPlayers)} pemain lagi untuk syarat minimal pertandingan.`">
+                        Syarat minimal 2 pemain terpenuhi.
                     </p>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 @section('title', 'Main Hub — Buat / Gabung Lobby | CORET! CHAOS')
 
 @section('content')
-<div class="space-y-8 pb-12">
+<div x-data class="space-y-8 pb-12">
 
     {{-- Hero Welcome Banner --}}
     <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#141625] via-[#16182C] to-[#141625] border border-[#23263A] p-6 lg:p-8 shadow-2xl">

@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CoretChaosController;
 use App\Http\Controllers\LobbyController;
+use App\Http\Controllers\ProfileController;
+use App\Services\SabotageDeckService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,11 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect()->route('lobby.hub');
-    }
-
-    return view('welcome');
+    return view('welcome', [
+        'curses' => app(SabotageDeckService::class)->deckCatalog(),
+    ]);
 })->name('home');
 
 /*
@@ -89,6 +89,7 @@ Route::post('/logout', [AuthController::class, 'logout'])
 */
 
 Route::middleware('auth')->group(function (): void {
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/lobby', [LobbyController::class, 'hub'])->name('lobby.hub');
     Route::post('/lobby/create', [LobbyController::class, 'store'])->name('lobby.store');
     Route::post('/lobby/join', [LobbyController::class, 'join'])->name('lobby.join');

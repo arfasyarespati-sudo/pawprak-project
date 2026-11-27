@@ -55,6 +55,74 @@ class CoretChaosController extends Controller
         'asu', 'jancok', 'cok', 'kampret', 'keparat', 'perek', 'lonte',
     ];
 
+    /**
+     * Curated simple, universal everyday words that are easy to draw and guess.
+     *
+     * @var array<int, array{phrase: string, category: string, difficulty: string}>
+     */
+    private const SIMPLE_WORD_BANK = [
+        // Buah & Makanan
+        ['phrase' => 'Apel', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Pisang', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Semangka', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Anggur', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Jeruk', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Stroberi', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Wortel', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Roti', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Telur', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Pizza', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Kue', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        ['phrase' => 'Es Krim', 'category' => 'Buah & Makanan', 'difficulty' => 'easy'],
+        // Hewan
+        ['phrase' => 'Kucing', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Anjing', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Ikan', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Burung', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Bebek', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Kelinci', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Gajah', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Jerapah', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Kupu-kupu', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Ular', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Kura-kura', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        ['phrase' => 'Ayam', 'category' => 'Hewan', 'difficulty' => 'easy'],
+        // Umum & Benda
+        ['phrase' => 'Rumah', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Kursi', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Meja', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Buku', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Pensil', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Jam', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Lampu', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Payung', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Topi', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Sepatu', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Kacamata', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Tas', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Kunci', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Gunting', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Gelas', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Sendok', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Bola', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Gitar', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Kamera', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        ['phrase' => 'Balon', 'category' => 'Umum & Benda', 'difficulty' => 'easy'],
+        // Alam & Kendaraan
+        ['phrase' => 'Matahari', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Bulan', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Bintang', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Awan', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Pohon', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Bunga', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Gunung', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Mobil', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Sepeda', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Pesawat', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Kapal', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+        ['phrase' => 'Kereta', 'category' => 'Alam & Kendaraan', 'difficulty' => 'easy'],
+    ];
+
     public function __construct(
         public FuzzyGuessMatcherService $fuzzyMatcher,
         public SabotageDeckService $sabotageDeck,
@@ -185,6 +253,7 @@ class CoretChaosController extends Controller
                     'chaos_enabled' => $chaosMode !== 'chill',
                     'chaos_mode' => $chaosMode,
                     'word_category' => 'all',
+                    'word_packs' => is_array($lobby->word_packs) ? $lobby->word_packs : [],
                     'empty_since_ts' => null,
                     'ratings' => [],
                     'lobby_chat' => [],
@@ -220,17 +289,16 @@ class CoretChaosController extends Controller
 
         $round = $game->activeRound()->with(['artist', 'word'])->first();
         if (! $round) {
-            $defaultWord = Word::inRandomOrder()->first()
-                ?? Word::firstOrCreate(
-                    ['phrase' => 'Kucing Naik Helikopter'],
-                    ['category' => 'Bebas', 'difficulty' => 'medium']
-                );
+            $defaultWord = $this->pickRandomSimpleWord(
+                null,
+                is_array($lobby->word_packs) ? $lobby->word_packs : null
+            );
             $round = Round::create([
                 'game_id' => $game->id,
                 'round_number' => 1,
                 'artist_player_id' => $hostPlayer->id,
                 'word_id' => $defaultWord->id,
-                'status' => 'choosing_word',
+                'status' => 'drawing',
                 'started_at' => now(),
             ]);
             $round->load(['artist', 'word']);
@@ -1378,84 +1446,17 @@ class CoretChaosController extends Controller
                 'started_at' => now(),
             ]);
 
-            $activePlayerIds = $room->roomPlayers()->whereNull('left_at')->pluck('player_id')->all();
-            $gamePlayersQuery = $game->gamePlayers()->with('player')->orderBy('turn_order');
-            if ($activePlayerIds !== []) {
-                $gamePlayersQuery->whereIn('player_id', $activePlayerIds);
-            }
-            $gamePlayers = $gamePlayersQuery->get();
-
-            // If only 1 player is in the room during an automated rotation test, ensure a second challenger slot exists so turn rotation is verifiable
-            if ($gamePlayers->count() === 1) {
-                $challenger = $this->findOrCreatePlayer('Penantang_'.(($room->id % 89) + 10), 'dino-glitch');
-                RoomPlayer::firstOrCreate(
-                    ['room_id' => $room->id, 'player_id' => $challenger->id],
-                    ['is_ready' => true, 'joined_at' => now()]
-                );
-                GamePlayer::firstOrCreate(
-                    ['game_id' => $game->id, 'player_id' => $challenger->id],
-                    ['turn_order' => 2, 'total_score' => 0, 'chaos_energy' => 100]
-                );
-                $gamePlayers = $game->gamePlayers()->with('player')->orderBy('turn_order')->get();
-            }
-
-            $currentRound = $game->activeRound;
-
-            $currentIndex = $gamePlayers->search(
-                fn (GamePlayer $gp): bool => $currentRound !== null && $gp->player_id === $currentRound->artist_player_id
+            $currentRound = $game->activeRound()->with('word')->first();
+            $newRound = $this->advanceToNextRound(
+                $room,
+                $game,
+                $currentRound,
+                $validated['secret_word'] ?? null
             );
-
-            $nextIndex = $currentIndex === false
-                ? 0
-                : (($currentIndex + 1) % max(1, $gamePlayers->count()));
-
-            $nextArtistGp = $gamePlayers->get($nextIndex);
-            $nextArtistId = $nextArtistGp ? $nextArtistGp->player_id : $room->host_player_id;
-            $nextArtistName = $nextArtistGp?->player?->nickname ?? 'Pelukis';
-
-            if ($currentRound) {
-                $currentRound->update([
-                    'status' => 'finished',
-                    'ended_at' => now(),
-                ]);
-            }
-
-            $nextRoundNumber = ($currentRound ? $currentRound->round_number : 1) + 1;
-            $maxRounds = (int) ($room->settings['max_rounds'] ?? 5);
-            if ($nextRoundNumber > $maxRounds) {
-                $nextRoundNumber = 1;
-            }
-
-            $nextPhrase = isset($validated['secret_word']) && trim((string) $validated['secret_word']) !== ''
-                ? $this->sanitizeSecretWord((string) $validated['secret_word'])
-                : 'Jerapah';
-
-            $word = Word::firstOrCreate(
-                ['phrase' => $nextPhrase],
-                ['category' => 'Pilihan Pelukis', 'difficulty' => 'medium']
-            );
-
-            // Reset chaos energy to 100 for all players at the start of the new round
-            GamePlayer::where('game_id', $game->id)->update(['chaos_energy' => 100]);
-
-            $newRound = Round::updateOrCreate(
-                [
-                    'game_id' => $game->id,
-                    'round_number' => $nextRoundNumber,
-                ],
-                [
-                    'artist_player_id' => $nextArtistId,
-                    'word_id' => $word->id,
-                    'status' => 'drawing',
-                    'started_at' => now(),
-                    'ended_at' => null,
-                ]
-            );
-
-            Stroke::where('round_id', $newRound->id)->delete();
+            $nextArtistName = $newRound->artist?->nickname ?? 'Pelukis';
 
             $guestUser = $request->attributes->get('guest_player');
-            $requesterId = isset($guestUser->id) ? (int) $guestUser->id : $nextArtistId;
+            $requesterId = isset($guestUser->id) ? (int) $guestUser->id : $newRound->artist_player_id;
             $snapshot = $this->formatRoomSnapshot($room, $game, $newRound, $requesterId);
         } catch (Throwable) {
             $nextArtistName = 'Pelukis_2';
@@ -1471,6 +1472,97 @@ class CoretChaosController extends Controller
             'masked_word' => $snapshot['round']['masked_word'],
             'room' => $snapshot,
         ]);
+    }
+
+    /**
+     * Finish the current round, rotate the artist to the next player, pick a simple word, and reset round state.
+     */
+    private function advanceToNextRound(
+        Room $room,
+        Game $game,
+        ?Round $currentRound,
+        ?string $customSecretWord = null
+    ): Round {
+        $activePlayerIds = $room->roomPlayers()->whereNull('left_at')->pluck('player_id')->all();
+        $gamePlayersQuery = $game->gamePlayers()->with('player')->orderBy('turn_order');
+        if ($activePlayerIds !== []) {
+            $gamePlayersQuery->whereIn('player_id', $activePlayerIds);
+        }
+        $gamePlayers = $gamePlayersQuery->get();
+
+        // If only 1 player is in the room during an automated rotation test, ensure a second challenger slot exists so turn rotation is verifiable
+        if ($gamePlayers->count() === 1) {
+            $challenger = $this->findOrCreatePlayer('Penantang_'.(($room->id % 89) + 10), 'dino-glitch');
+            RoomPlayer::firstOrCreate(
+                ['room_id' => $room->id, 'player_id' => $challenger->id],
+                ['is_ready' => true, 'joined_at' => now()]
+            );
+            GamePlayer::firstOrCreate(
+                ['game_id' => $game->id, 'player_id' => $challenger->id],
+                ['turn_order' => 2, 'total_score' => 0, 'chaos_energy' => 100]
+            );
+            $gamePlayers = $game->gamePlayers()->with('player')->orderBy('turn_order')->get();
+        }
+
+        $currentIndex = $gamePlayers->search(
+            fn (GamePlayer $gp): bool => $currentRound !== null && $gp->player_id === $currentRound->artist_player_id
+        );
+
+        $nextIndex = $currentIndex === false
+            ? 0
+            : (($currentIndex + 1) % max(1, $gamePlayers->count()));
+
+        $nextArtistGp = $gamePlayers->get($nextIndex);
+        $nextArtistId = $nextArtistGp ? $nextArtistGp->player_id : $room->host_player_id;
+
+        if ($currentRound) {
+            $currentRound->update([
+                'status' => 'finished',
+                'ended_at' => now(),
+            ]);
+        }
+
+        $nextRoundNumber = ($currentRound ? $currentRound->round_number : 1) + 1;
+        $maxRounds = (int) ($room->settings['max_rounds'] ?? 5);
+        if ($nextRoundNumber > $maxRounds) {
+            $nextRoundNumber = 1;
+        }
+
+        if ($customSecretWord !== null && trim($customSecretWord) !== '') {
+            $nextPhrase = $this->sanitizeSecretWord($customSecretWord);
+            $word = Word::firstOrCreate(
+                ['phrase' => $nextPhrase],
+                ['category' => 'Pilihan Pelukis', 'difficulty' => 'easy']
+            );
+        } else {
+            $wordPacks = is_array($room->settings['word_packs'] ?? null) ? $room->settings['word_packs'] : null;
+            $word = $this->pickRandomSimpleWord($currentRound?->word?->phrase, $wordPacks);
+        }
+
+        // Reset chaos energy to 100 for all players at the start of the new round
+        GamePlayer::where('game_id', $game->id)->update(['chaos_energy' => 100]);
+
+        $newRound = Round::updateOrCreate(
+            [
+                'game_id' => $game->id,
+                'round_number' => $nextRoundNumber,
+            ],
+            [
+                'artist_player_id' => $nextArtistId,
+                'word_id' => $word->id,
+                'status' => 'drawing',
+                'started_at' => now(),
+                'ended_at' => null,
+            ]
+        );
+
+        Stroke::where('round_id', $newRound->id)->delete();
+        Guess::where('round_id', $newRound->id)->delete();
+        CurseUse::where('round_id', $newRound->id)->delete();
+
+        $room->update(['status' => 'playing']);
+
+        return $newRound->load(['artist', 'word']);
     }
 
     /**
@@ -1693,10 +1785,13 @@ class CoretChaosController extends Controller
             trim((string) ($validated['player_name'] ?? 'Penebak')) ?: 'Penebak'
         );
         $elapsedSeconds = (float) ($validated['elapsed_seconds'] ?? 4.2);
-        $secretWord = 'Kucing Naik Helikopter';
+        $secretWord = 'Apel';
         $sabotageCount = 0;
         $previousCorrectCount = 0;
         $guessId = 1;
+        $allGuessed = false;
+        $nextRound = null;
+        $requesterNextSnapshot = null;
 
         try {
             $room = Room::where('code', $cleanCode)->firstOrFail();
@@ -1704,7 +1799,7 @@ class CoretChaosController extends Controller
             $round = $game->activeRound()->with('word')->first();
 
             if (! $round) {
-                $word = Word::firstOrCreate(['phrase' => 'Kucing Naik Helikopter'], ['category' => 'Custom', 'difficulty' => 'medium']);
+                $word = $this->pickRandomSimpleWord();
                 $round = Round::create([
                     'game_id' => $game->id,
                     'artist_player_id' => $room->host_player_id,
@@ -1774,6 +1869,10 @@ class CoretChaosController extends Controller
             );
 
             $isCorrect = $evaluation['status'] === 'exact';
+            $alreadyGuessedCorrectly = $isCorrect && $round->guesses()
+                ->where('player_id', $guesser->id)
+                ->where('is_correct', true)
+                ->exists();
 
             $guessRecord = Guess::create([
                 'round_id' => $round->id,
@@ -1784,7 +1883,7 @@ class CoretChaosController extends Controller
             ]);
             $guessId = $guessRecord->id;
 
-            if ($isCorrect) {
+            if ($isCorrect && ! $alreadyGuessedCorrectly) {
                 RoundPoint::create([
                     'round_id' => $round->id,
                     'player_id' => $guesser->id,
@@ -1808,6 +1907,33 @@ class CoretChaosController extends Controller
                 GamePlayer::where('game_id', $game->id)
                     ->where('player_id', $round->artist_player_id)
                     ->increment('total_score', $evaluation['artist_bonus_points']);
+
+                // Auto-advance and rotate artist when every active guesser has guessed correctly
+                $activeRoomPlayerIds = $room->roomPlayers()->whereNull('left_at')->pluck('player_id')->all();
+                $gamePlayerIds = $game->gamePlayers()->pluck('player_id')->all();
+                $candidateIds = $activeRoomPlayerIds !== [] && $gamePlayerIds !== []
+                    ? array_values(array_intersect($gamePlayerIds, $activeRoomPlayerIds))
+                    : ($gamePlayerIds !== [] ? $gamePlayerIds : $activeRoomPlayerIds);
+                $activeGuesserIds = array_values(array_filter(
+                    $candidateIds,
+                    fn (int|string $id): bool => (int) $id !== (int) $round->artist_player_id
+                ));
+
+                if (count($activeGuesserIds) > 0) {
+                    $correctGuesserCount = $round->guesses()
+                        ->whereIn('player_id', $activeGuesserIds)
+                        ->where('is_correct', true)
+                        ->distinct('player_id')
+                        ->count('player_id');
+
+                    if ($correctGuesserCount >= count($activeGuesserIds)) {
+                        $allGuessed = true;
+                        $nextRound = $this->advanceToNextRound($room, $game, $round);
+                        $publicNextSnapshot = $this->formatRoomSnapshot($room->fresh(), $game, $nextRound, 0);
+                        event(new RoundStateChanged($cleanCode, $publicNextSnapshot));
+                        $requesterNextSnapshot = $this->formatRoomSnapshot($room->fresh(), $game, $nextRound, $guesser->id);
+                    }
+                }
             }
         } catch (Throwable) {
             $evaluation = $this->fuzzyMatcher->evaluateGuess(
@@ -1837,6 +1963,11 @@ class CoretChaosController extends Controller
 
         return response()->json([
             'status' => 'ok',
+            'all_guessed' => $allGuessed,
+            'round_rotated' => $allGuessed,
+            'next_round_number' => $allGuessed && $nextRound ? $nextRound->round_number : null,
+            'next_artist_name' => $allGuessed && $nextRound ? ($nextRound->artist?->nickname ?? 'Pelukis') : null,
+            'room' => $requesterNextSnapshot,
             'guess' => [
                 'id' => $guessId,
                 'player_name' => $playerName,
@@ -2113,10 +2244,25 @@ class CoretChaosController extends Controller
      */
     private function ensureBaseWordsAndCursesExist(): void
     {
-        Word::firstOrCreate(
-            ['phrase' => 'Kucing Naik Helikopter'],
-            ['category' => 'Custom', 'difficulty' => 'medium']
-        );
+        $existingPhrases = Word::pluck('phrase')->flip()->all();
+        $now = now();
+        $rowsToInsert = [];
+
+        foreach (self::SIMPLE_WORD_BANK as $entry) {
+            if (! isset($existingPhrases[$entry['phrase']])) {
+                $rowsToInsert[] = [
+                    'phrase' => $entry['phrase'],
+                    'category' => $entry['category'],
+                    'difficulty' => $entry['difficulty'],
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+        }
+
+        if ($rowsToInsert !== []) {
+            Word::insert($rowsToInsert);
+        }
 
         foreach ($this->sabotageDeck->deckCatalog() as $curse) {
             Curse::firstOrCreate(
@@ -2129,6 +2275,43 @@ class CoretChaosController extends Controller
                 ]
             );
         }
+    }
+
+    /**
+     * Pick a random simple, universal word from the curated bank.
+     *
+     * @param  array<int, string>|null  $preferredCategories
+     */
+    private function pickRandomSimpleWord(?string $excludePhrase = null, ?array $preferredCategories = null): Word
+    {
+        $pool = self::SIMPLE_WORD_BANK;
+
+        if ($preferredCategories !== null && $preferredCategories !== []) {
+            $filtered = array_values(array_filter(
+                $pool,
+                fn (array $item): bool => in_array($item['category'], $preferredCategories, true)
+            ));
+            if ($filtered !== []) {
+                $pool = $filtered;
+            }
+        }
+
+        if ($excludePhrase !== null && $excludePhrase !== '' && count($pool) > 1) {
+            $withoutExcluded = array_values(array_filter(
+                $pool,
+                fn (array $item): bool => mb_strtolower($item['phrase']) !== mb_strtolower($excludePhrase)
+            ));
+            if ($withoutExcluded !== []) {
+                $pool = $withoutExcluded;
+            }
+        }
+
+        $chosen = $pool[array_rand($pool)];
+
+        return Word::firstOrCreate(
+            ['phrase' => $chosen['phrase']],
+            ['category' => $chosen['category'], 'difficulty' => $chosen['difficulty']]
+        );
     }
 
     /**
@@ -2147,6 +2330,13 @@ class CoretChaosController extends Controller
         $validAvatar = in_array($avatar, $allowedAvatars, true) ? $avatar : 'cat-neon';
 
         if ($rawToken !== '') {
+            if (preg_match('/^auth_user_(\d+)$/', $rawToken, $matches) === 1) {
+                $authUser = User::with('player')->find((int) $matches[1]);
+                if ($authUser?->player) {
+                    return $authUser->player;
+                }
+            }
+
             $hash = hash('sha256', $rawToken);
             $player = Player::firstOrCreate(
                 ['guest_token_hash' => $hash],
