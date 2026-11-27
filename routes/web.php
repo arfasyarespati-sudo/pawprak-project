@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\ArenaProfileController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CoretChaosController;
+use App\Http\Controllers\GameplayActionController;
+use App\Http\Controllers\GameRoomController;
 use App\Http\Controllers\LobbyController;
+use App\Http\Controllers\MuseumController;
 use App\Http\Controllers\ProfileController;
 use App\Services\SabotageDeckService;
 use Illuminate\Support\Facades\Route;
@@ -33,33 +37,40 @@ Route::post('/broadcasting/auth', [CoretChaosController::class, 'authenticateBro
 Route::prefix('api')->group(function (): void {
     Route::get('/ping', [CoretChaosController::class, 'ping'])->name('game.ping');
 
-    // CORET! CHAOS SPA Profile & Arena Auth endpoints (separate from /api/auth/* team routes)
-    Route::post('/arena-auth/register', [CoretChaosController::class, 'registerPlayer'])->name('arena-auth.register');
-    Route::post('/arena-auth/login', [CoretChaosController::class, 'loginPlayer'])->name('arena-auth.login');
-    Route::post('/arena-auth/logout', [CoretChaosController::class, 'logoutPlayer'])->name('arena-auth.logout');
-    Route::post('/arena-auth/profile', [CoretChaosController::class, 'updatePlayerProfile'])->name('arena-auth.profile');
-    Route::get('/arena-auth/me', [CoretChaosController::class, 'currentPlayerProfile'])->name('arena-auth.me');
+    // CORET! CHAOS SPA Profile & Arena Auth endpoints
+    Route::post('/arena-auth/register', [ArenaProfileController::class, 'register'])->name('arena-auth.register');
+    Route::post('/arena-auth/login', [ArenaProfileController::class, 'login'])->name('arena-auth.login');
+    Route::post('/arena-auth/logout', [ArenaProfileController::class, 'logout'])->name('arena-auth.logout');
+    Route::post('/arena-auth/profile', [ArenaProfileController::class, 'updateProfile'])->name('arena-auth.profile');
+    Route::get('/arena-auth/me', [ArenaProfileController::class, 'me'])->name('arena-auth.me');
 
-    Route::get('/rooms/public', [CoretChaosController::class, 'listPublicRooms'])->name('rooms.public');
-    Route::post('/rooms', [CoretChaosController::class, 'createRoom'])->name('rooms.store');
-    Route::post('/rooms/quick-play', [CoretChaosController::class, 'quickPlay'])->name('rooms.quick-play');
-    Route::post('/rooms/join', [CoretChaosController::class, 'joinRoom'])->name('rooms.join');
-    Route::get('/rooms/{code}/state', [CoretChaosController::class, 'roomState'])->name('rooms.state');
-    Route::post('/rooms/{code}/lobby-chat', [CoretChaosController::class, 'submitLobbyChat'])->name('rooms.lobby-chat');
-    Route::post('/rooms/{code}/settings', [CoretChaosController::class, 'updateSettings'])->name('rooms.settings');
-    Route::post('/rooms/{code}/ready', [CoretChaosController::class, 'toggleReady'])->name('rooms.ready');
-    Route::post('/rooms/{code}/start', [CoretChaosController::class, 'startGame'])->name('rooms.start');
-    Route::post('/rooms/{code}/set-word', [CoretChaosController::class, 'setSecretWord'])->name('rooms.set-word');
-    Route::post('/rooms/{code}/finish-round', [CoretChaosController::class, 'finishRound'])->name('rooms.finish-round');
-    Route::post('/rooms/{code}/leave', [CoretChaosController::class, 'leaveRoom'])->name('rooms.leave');
-    Route::post('/rooms/{code}/rotate-round', [CoretChaosController::class, 'rotateRound'])->name('rooms.rotate');
-    Route::post('/rooms/{code}/strokes', [CoretChaosController::class, 'recordStroke'])->name('rooms.strokes');
-    Route::post('/rooms/{code}/sabotage', [CoretChaosController::class, 'triggerSabotage'])->name('rooms.sabotage');
-    Route::post('/rooms/{code}/guess', [CoretChaosController::class, 'submitGuess'])->name('rooms.guess');
-    Route::post('/rooms/{code}/rate', [CoretChaosController::class, 'rateArtwork'])->name('rooms.rate');
-    Route::post('/rooms/{code}/export-gif', [CoretChaosController::class, 'exportPanicReplayGif'])->name('rooms.export-gif');
-    Route::get('/museum', [CoretChaosController::class, 'listMuseum'])->name('museum.index');
-    Route::get('/hall-of-shame/{id}/gif', [CoretChaosController::class, 'downloadHallOfShameGif'])->name('hall-of-shame.gif');
+    // Room & Lobby Lifecycle
+    Route::get('/rooms/public', [GameRoomController::class, 'publicRooms'])->name('rooms.public');
+    Route::post('/rooms', [GameRoomController::class, 'store'])->name('rooms.store');
+    Route::post('/rooms/quick-play', [GameRoomController::class, 'quickPlay'])->name('rooms.quick-play');
+    Route::post('/rooms/join', [GameRoomController::class, 'join'])->name('rooms.join');
+    Route::get('/rooms/{code}/state', [GameRoomController::class, 'state'])->name('rooms.state');
+    Route::post('/rooms/{code}/lobby-chat', [GameRoomController::class, 'lobbyChat'])->name('rooms.lobby-chat');
+    Route::post('/rooms/{code}/settings', [GameRoomController::class, 'updateSettings'])->name('rooms.settings');
+    Route::post('/rooms/{code}/ready', [GameRoomController::class, 'toggleReady'])->name('rooms.ready');
+    Route::post('/rooms/{code}/start', [GameRoomController::class, 'start'])->name('rooms.start');
+    Route::post('/rooms/{code}/leave', [GameRoomController::class, 'leave'])->name('rooms.leave');
+    Route::post('/rooms/{code}/play-again', [GameRoomController::class, 'playAgain'])->name('rooms.play-again');
+    Route::post('/rooms/{code}/return-lobby', [GameRoomController::class, 'returnToLobby'])->name('rooms.return-lobby');
+
+    // Gameplay Actions (Canvas, Secret Word, Sabotage, Guessing, Round Rotation)
+    Route::post('/rooms/{code}/set-word', [GameplayActionController::class, 'setSecretWord'])->name('rooms.set-word');
+    Route::post('/rooms/{code}/finish-round', [GameplayActionController::class, 'finishRound'])->name('rooms.finish-round');
+    Route::post('/rooms/{code}/rotate-round', [GameplayActionController::class, 'rotateRound'])->name('rooms.rotate');
+    Route::post('/rooms/{code}/strokes', [GameplayActionController::class, 'recordStroke'])->name('rooms.strokes');
+    Route::post('/rooms/{code}/sabotage', [GameplayActionController::class, 'triggerSabotage'])->name('rooms.sabotage');
+    Route::post('/rooms/{code}/guess', [GameplayActionController::class, 'submitGuess'])->name('rooms.guess');
+
+    // Museum & Ratings
+    Route::post('/rooms/{code}/rate', [MuseumController::class, 'rateArtwork'])->name('rooms.rate');
+    Route::post('/rooms/{code}/export-gif', [MuseumController::class, 'exportPanicReplayGif'])->name('rooms.export-gif');
+    Route::get('/museum', [MuseumController::class, 'index'])->name('museum.index');
+    Route::get('/hall-of-shame/{id}/gif', [MuseumController::class, 'downloadGif'])->name('hall-of-shame.gif');
 });
 
 /*
